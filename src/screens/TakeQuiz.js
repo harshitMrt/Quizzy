@@ -50,8 +50,9 @@ export default function TakeQuiz({ quizId, addRes, completeQuiz }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#f5f5f5",
+
+    paddingTop: 70,
+    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
   },

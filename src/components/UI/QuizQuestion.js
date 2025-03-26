@@ -1,6 +1,7 @@
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons"; // Import icons for tick and cross
 
 const { width, height } = Dimensions.get("window");
 
@@ -44,19 +45,22 @@ export default function QuizQuestion({
             let backgroundColor = "#fff";
             let textColor = "#333";
             let borderColor = "#ccc";
+            let icon = null;
 
             if (submitted) {
               if (index === question.correctOption) {
-                backgroundColor = "#4CAF50"; // green color
-                textColor = "#fff";  // white color
+                backgroundColor = "#4CAF50"; // Green for correct answer
+                textColor = "#fff";
                 borderColor = "#4CAF50";
+                icon = <MaterialIcons name="check-circle" size={24} color="white" />;
               } else if (index === selected) {
-                backgroundColor = "#E53935";
+                backgroundColor = "#E53935"; // Red for incorrect answer
                 textColor = "#fff";
                 borderColor = "#E53935";
+                icon = <MaterialIcons name="cancel" size={24} color="white" />;
               }
             } else if (selected === index) {
-              backgroundColor = "#FFC107";
+              backgroundColor = "#FFC107"; // Yellow highlight before submission
               textColor = "#000";
               borderColor = "#FFC107";
             }
@@ -67,7 +71,10 @@ export default function QuizQuestion({
                 onPress={() => !submitted && selectOption(index)}
                 disabled={submitted}
               >
-                <Text style={[styles.optionText, { color: textColor }]}>{item}</Text>
+                <View style={styles.optionContainer}>
+                  <Text style={[styles.optionText, { color: textColor }]}>{item}</Text>
+                  {icon}
+                </View>
               </TouchableOpacity>
             );
           }}
@@ -92,6 +99,22 @@ export default function QuizQuestion({
           <Text style={styles.submitButtonText}>{submitted ? "Next" : "Check Answer"}</Text>
         </TouchableOpacity>
       </View>
+
+      <View style={styles.referenceBox}>
+        <Text style={styles.referenceText}>
+          For reference of Visually Impaired {"( People with color blindness )"}
+        </Text>
+        <View style={styles.legendContainer}>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendColor, { backgroundColor: "green" }]}></View>
+            <Text>Correct</Text>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendColor, { backgroundColor: "red" }]}></View>
+            <Text>Incorrect</Text>
+          </View>
+        </View>
+      </View>
     </LinearGradient>
   );
 }
@@ -106,10 +129,11 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "94%",
-    padding: 20,
     borderRadius: 15,
     alignItems: "center",
     elevation: 6,
+    paddingVertical: 40,
+    paddingHorizontal: 30,
   },
   questionTitle: {
     fontSize: 24,
@@ -135,6 +159,12 @@ const styles = StyleSheet.create({
     width: "100%",
     elevation: 3,
   },
+  optionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+  },
   optionText: {
     fontSize: 16,
     fontWeight: "bold",
@@ -150,5 +180,32 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "white",
+  },
+  referenceBox: {
+    position: "absolute",
+    bottom: 10,
+    alignItems: "center",
+  },
+  referenceText: {
+    fontSize: 14,
+    textAlign: "center",
+    color: "#fff",
+  },
+  legendContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginTop: 5,
+  },
+  legendItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 10,
+  },
+  legendColor: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    marginRight: 5,
   },
 });
