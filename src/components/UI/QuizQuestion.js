@@ -1,7 +1,6 @@
 import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View, Dimensions } from "react-native";
 import React, { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { MaterialIcons } from "@expo/vector-icons"; // Import icons for tick and cross
 
 const { width, height } = Dimensions.get("window");
 
@@ -45,22 +44,21 @@ export default function QuizQuestion({
             let backgroundColor = "#fff";
             let textColor = "#333";
             let borderColor = "#ccc";
-            let icon = null;
-
+            let icon = ""; 
             if (submitted) {
               if (index === question.correctOption) {
-                backgroundColor = "#4CAF50"; // Green for correct answer
+                backgroundColor = "#4CAF50"; 
                 textColor = "#fff";
                 borderColor = "#4CAF50";
-                icon = <MaterialIcons name="check-circle" size={24} color="white" />;
+                icon = "✔"; 
               } else if (index === selected) {
-                backgroundColor = "#E53935"; // Red for incorrect answer
+                backgroundColor = "#E53935"; 
                 textColor = "#fff";
                 borderColor = "#E53935";
-                icon = <MaterialIcons name="cancel" size={24} color="white" />;
+                icon = "✖"; 
               }
             } else if (selected === index) {
-              backgroundColor = "#FFC107"; // Yellow highlight before submission
+              backgroundColor = "#FFC107"; 
               textColor = "#000";
               borderColor = "#FFC107";
             }
@@ -73,7 +71,7 @@ export default function QuizQuestion({
               >
                 <View style={styles.optionContainer}>
                   <Text style={[styles.optionText, { color: textColor }]}>{item}</Text>
-                  {icon}
+                  {submitted && <Text style={[styles.iconText, { color: textColor }]}>{icon}</Text>}
                 </View>
               </TouchableOpacity>
             );
@@ -98,22 +96,6 @@ export default function QuizQuestion({
         >
           <Text style={styles.submitButtonText}>{submitted ? "Next" : "Check Answer"}</Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.referenceBox}>
-        <Text style={styles.referenceText}>
-          For reference of Visually Impaired {"( People with color blindness )"}
-        </Text>
-        <View style={styles.legendContainer}>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: "green" }]}></View>
-            <Text>Correct</Text>
-          </View>
-          <View style={styles.legendItem}>
-            <View style={[styles.legendColor, { backgroundColor: "red" }]}></View>
-            <Text>Incorrect</Text>
-          </View>
-        </View>
       </View>
     </LinearGradient>
   );
@@ -169,6 +151,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  iconText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
   submitButton: {
     marginTop: 20,
     paddingVertical: 14,
@@ -180,32 +167,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "white",
-  },
-  referenceBox: {
-    position: "absolute",
-    bottom: 10,
-    alignItems: "center",
-  },
-  referenceText: {
-    fontSize: 14,
-    textAlign: "center",
-    color: "#fff",
-  },
-  legendContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginTop: 5,
-  },
-  legendItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 10,
-  },
-  legendColor: {
-    height: 10,
-    width: 10,
-    borderRadius: 5,
-    marginRight: 5,
   },
 });
